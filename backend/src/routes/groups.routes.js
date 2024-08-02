@@ -1,8 +1,13 @@
-const express = require('express');
-const router = express.Router();
-const groupController = require('../controllers/groupController');
+import { Router } from "express";
+import {createGroup, getGroups} from "../controllers/groupControllers.js"
 
-router.get('/', groupController.getGroups);
-router.post('/', groupController.createGroup);
 
-module.exports = router;
+const router = Router();
+
+router.post('/', createGroup);
+router.get('/', getGroups);
+
+// router.route("/create-group", createGroup).post()
+// router.route("/get-group",getGroups).get()
+
+export default router

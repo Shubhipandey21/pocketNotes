@@ -1,16 +1,23 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
-const groupSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
+const groupMessageSchema = new mongoose.Schema(
+    {
+        messageContent: {
+            type: String,
+            required: true,
+        },
+
+        groupId: 
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Group",
+                required: true
+            },
+        
     },
-    color: {
-        type: String,
-        required: true
+    {
+        timestamps: true,
     }
-});
+)
 
-const Group = mongoose.model('Group', groupSchema);
-
-module.exports = Group;
+export const GroupMessages = mongoose.model("GroupMessages", groupMessageSchema)

@@ -1,24 +1,21 @@
-const Group = require('../models/groupMessages.models');
+import { Group } from "../models/groups.models.js";
 
-exports.getGroups = async (req, res) => {
+export const createGroup = async (req, res, next) => {
     try {
-        const groups = await Group.find();
-        res.json(groups);
+        const { groupName } = req.body;
+        const group = new Group({ groupName });
+        await group.save();
+        res.status(201).json(group);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-exports.createGroup = async (req, res) => {
-    const group = new Group({
-        name: req.body.name,
-        color: req.body.color
-    });
-
+export const getGroups = async (req, res, next) => {
     try {
-        const newGroup = await group.save();
-        res.status(201).json(newGroup);
+        const groups = await Group.find();
+        res.status(200).json(groups);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        next(error);
     }
 };

@@ -1,24 +1,38 @@
-const Note = require('../models/groups.models');
+import { Group } from "../models/groups.models.js";
+import { GroupMessages } from "../models/groupMessages.models.js";
 
-exports.getNotes = async (req, res) => {
+export const addMessage = async (req, res, next) => {
     try {
-        const notes = await Note.find({ groupId: req.params.groupId });
-        res.json(notes);
+        const { groupId } = req.params;
+        const { messageContent } = req.body;
+        const groupMessages = new GroupMessages({ messageContent,groupId });
+
+        const group = await Group.findById(groupId);
+
+        if (!group) {
+            return res.status(404).json({ message: 'Group not found' });
+        }
+        await groupMessages.save();
+        
+        // group.groupMessages.push(messageContent);
+        group.groupMessages.push(groupMessages._id);
+        await group.save();    
+
+        res.status(201).json(groupMessages);
+
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Error adding message:', error);
+        next(error);
     }
 };
 
-exports.createNote = async (req, res) => {
-    const note = new Note({
-        groupId: req.body.groupId,
-        text: req.body.text
-    });
 
+export const getMessages = async (req, res, next) => {
     try {
-        const newNote = await note.save();
-        res.status(201).json(newNote);
+        const { groupId } = req.params;
+        const groupMessages = await GroupMessages.find({ groupId });
+        res.status(200).json(groupMessages);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        next(error);
     }
 };

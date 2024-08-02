@@ -1,8 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const noteController = require('../controllers/noteController');
+import { Router } from "express";
+import {addMessage, getMessages } from "../controllers/messageController.js"
 
-router.get('/:groupId', noteController.getNotes);
-router.post('/', noteController.createNote);
 
-module.exports = router;
+const router = Router();
+
+router.post('/:groupId/messages', addMessage);
+router.get('/:groupId/messages', getMessages);
+// router.route("/create-msg").post()
+// router.route("/get-msg").get()
+
+export default router

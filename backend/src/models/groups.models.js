@@ -1,21 +1,24 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
-const noteSchema = new mongoose.Schema({
-    groupId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Group',
-        required: true
+const groupSchema = new mongoose.Schema(
+    {
+        groupName: {
+            type: String,
+            required: true,
+            // unique: true,
+        },
+
+        groupMessages: [
+            {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "GroupMessages"
+        },
+    ]
+
     },
-    text: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: Date,
-        default: Date.now
+    {
+        timestamps: true,
     }
-});
+)
 
-const Note = mongoose.model('Note', noteSchema);
-
-module.exports = Note;
+export const Group = mongoose.model("Group", groupSchema)

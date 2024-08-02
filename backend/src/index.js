@@ -8,7 +8,6 @@ dotenv.config({
 })
 
 
-console.log("env port inddex.js",process.env.PORT)
 const PORT = 8000 
 connectDB()
 .then(() => {
