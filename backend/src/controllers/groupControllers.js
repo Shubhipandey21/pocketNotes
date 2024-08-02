@@ -1,4 +1,4 @@
-const Group = require('../models/group');
+const Group = require('../models/groupMessages.models');
 
 exports.getGroups = async (req, res) => {
     try {
